@@ -26,7 +26,7 @@ jobs:
           git submodule update --init --recursive --depth 1 --recommend-shallow
           bash patch-libpng.sh
           cd libpng/projects/vstudio
-          msbuild.exe /property:Platform=Win32 /property:configuration="Release" vstudio.sln
+          msbuild.exe /property:Platform=Win32 /property:configuration="Release" /property:TreatWarningsAsErrors="false" vstudio.sln
       - name: Upload output
         uses: actions/upload-artifact@v3
         with:
