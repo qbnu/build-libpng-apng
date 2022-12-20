@@ -20,6 +20,8 @@ jobs:
           cd libpng/projects/vstudio
           msbuild.exe /p:Platform=Win32 /p:configuration="Release" /p:WarningLevel="Level4" /t:libpng vstudio.sln
           msbuild.exe /p:Platform=x64 /p:configuration="Release" /p:WarningLevel="Level4" /t:libpng vstudio.sln
+          msbuild.exe /p:Platform=Win32 /p:configuration="Debug" /p:WarningLevel="Level4" /t:libpng vstudio.sln
+          msbuild.exe /p:Platform=x64 /p:configuration="Debug" /p:WarningLevel="Level4" /t:libpng vstudio.sln
       - name: moving
         run: |
           mkdir build
