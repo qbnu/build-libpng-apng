@@ -21,7 +21,6 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
       - name: Build
-        continue-on-error: true
         run: |
           git submodule update --init --recursive --depth 1 --recommend-shallow
           bash patch-libpng.sh
