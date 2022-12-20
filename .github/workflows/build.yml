@@ -29,6 +29,8 @@ jobs:
           mv libpng/projects/vstudio/Release build/x86
           mv libpng/projects/vstudio/Debug build/x86
           mv libpng/projects/vstudio/x64 build
+          mkdir build/include
+          mv libpng/png.h libpng/pngconf.h libpng/pnglibconf.h build/include
       - name: Upload output
         uses: actions/upload-artifact@v3
         with:
