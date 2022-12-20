@@ -1,0 +1,38 @@
+name: Build-static
+
+on: push
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+            vs-version: '[16.0,17.0)'
+            msbuild-architecture: x64
+      - name: Build
+        run: |
+          git submodule update --init --recursive --depth 1 --recommend-shallow
+          bash patch-libpng.sh
+          cd libpng/projects/vstudio
+          msbuild.exe /p:Platform=Win32 /p:configuration="Release Library" /p:WarningLevel="Level4" /t:libpng vstudio.sln
+          msbuild.exe /p:Platform=x64 /p:configuration="Release Library" /p:WarningLevel="Level4" /t:libpng vstudio.sln
+          msbuild.exe /p:Platform=Win32 /p:configuration="Debug Library" /p:WarningLevel="Level4" /t:libpng vstudio.sln
+          msbuild.exe /p:Platform=x64 /p:configuration="Debug Library" /p:WarningLevel="Level4" /t:libpng vstudio.sln
+      - name: moving
+        run: |
+          mkdir build
+          mkdir build/x86
+          mv "libpng/projects/vstudio/Release Library" build/x86
+          mv "libpng/projects/vstudio/Debug Library" build/x86
+          mv libpng/projects/vstudio/x64 build
+          mkdir build/include
+          mv libpng/png.h libpng/pngconf.h libpng/pnglibconf.h build/include
+      - name: Upload output
+        uses: actions/upload-artifact@v3
+        with:
+          name: libpng-apng
+          path: build
